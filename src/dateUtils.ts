@@ -1,22 +1,38 @@
-import moment from "moment";
+import {getYear,addSeconds, addMinutes, addDays, addWeeks, addMonths, addYears ,isWithinInterval, isBefore, isEqual} from "date-fns";
 import { DATE_UNIT_TYPES } from "./constants";
 
-export function getCurrentYear() {
-  return moment().year();
+export function getCurrentYear(): number {
+  return getYear(new Date());
 }
 
-export function add(date, number, type = DATE_UNIT_TYPES.DAYS) {
-  return moment(date).add(number, type).toDate();
+export function add(date: Date, number: number, type = DATE_UNIT_TYPES.DAYS): Date {
+
+  if (type == DATE_UNIT_TYPES.SECONDS) {
+    return addSeconds(date, number);
+  }
+  if (type == DATE_UNIT_TYPES.MINUTES) {
+    return addMinutes(date, number);
+  }
+  if (type == DATE_UNIT_TYPES.WEEKS) {
+    return addWeeks(date, number);
+  }
+  if (type == DATE_UNIT_TYPES.MONTHS) {
+    return addMonths(date, number);
+  }
+  if (type == DATE_UNIT_TYPES.YEARS) {
+    return addYears(date, number);
+  }
+  return addDays(date, number);
 }
 
-export function isWithinRange(date, from, to) {
-  return moment(date).isBetween(from, to);
+export function isWithinRange(date: Date, from: Date, to: Date): boolean {
+  return isWithinInterval(date, {start: from, end: to});
 }
 
-export function isDateBefore(date, compareDate) {
-  return moment(date).isBefore(compareDate);
+export function isDateBefore(date: Date, compareDate: Date): boolean {
+  return isBefore(date, compareDate);
 }
 
-export function isSameDay(date, compareDate) {
-  return moment(date).isSame(compareDate);
+export function isSameDay(date: Date, compareDate: Date): boolean {
+  return isEqual(date, compareDate);
 }
